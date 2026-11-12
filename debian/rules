@@ -8,6 +8,8 @@ export DEB_BUILD_MAINT_OPTIONS := hardening=+all
 ifneq (0,$(shell dpkg --compare-versions `dpkg-query -W -f '$${Version}' perl` ge 5.24; echo $$?))
 export DEB_BUILD_MAINT_OPTIONS=hardening := +format,+fortify,+stackprotector,+relro,+bindnow
 endif
+# gcc 14 treats the VRF helper's char ** vs const char ** as an error
+export DEB_CFLAGS_MAINT_APPEND = -Wno-error=incompatible-pointer-types
 
 DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 
